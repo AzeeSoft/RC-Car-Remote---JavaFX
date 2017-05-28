@@ -76,7 +76,7 @@
                   <Insets left="20.0" right="20.0" />
                </VBox.margin>
                <children>
-                  <JFXTextField fx:id="speechTextField" maxWidth="1.7976931348623157E308" promptText="Type here" style="-fx-text-fill: #fff;" unFocusColor="#222325" HBox.hgrow="ALWAYS">
+                  <JFXTextField fx:id="speechTextField" maxWidth="1.7976931348623157E308" onAction="#speakText" promptText="Type here" style="-fx-text-fill: #fff;" unFocusColor="#222325" HBox.hgrow="ALWAYS">
                      <HBox.margin>
                         <Insets right="20.0" />
                      </HBox.margin>

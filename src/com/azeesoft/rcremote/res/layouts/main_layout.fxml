@@ -25,7 +25,7 @@
                            <children>
                               <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <children>
-                                    <Label alignment="CENTER" maxWidth="1.7976931348623157E308" style="-fx-background-color: #3675db;" text="Main Menu" textFill="WHITE">
+                                    <Label alignment="CENTER" maxWidth="1.7976931348623157E308" style="-fx-background-color: #3675db;" text="RC Remote" textFill="WHITE">
                                        <font>
                                           <Font name="Segoe UI Semibold" size="24.0" />
                                        </font>
