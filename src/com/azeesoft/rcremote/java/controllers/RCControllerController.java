@@ -4,6 +4,7 @@ import com.azeesoft.rcremote.java.tools.Stools;
 import com.azeesoft.rcremote.java.tools.wifi.CommConstants;
 import com.azeesoft.rcremote.java.tools.wifi.CommConstants.RESPONSE_DATA_FLAGS_FAILURE;
 import com.azeesoft.rcremote.java.tools.wifi.IPClient;
+import com.azeesoft.rcremote.java.tools.wifi.MicReceiver;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXToggleButton;
@@ -51,6 +52,8 @@ public class RCControllerController implements Initializable, IPClient.OnServerD
     @FXML
     AnchorPane noWifiOverlay;
 
+    MicReceiver micReceiver;
+
     Stage currentStage;
 
     boolean moveForward = false, moveBackward = false, moveLeft = false, moveRight = false;
@@ -59,6 +62,7 @@ public class RCControllerController implements Initializable, IPClient.OnServerD
     public void initialize(URL location, ResourceBundle resources) {
         prepareIPClient();
         prepareUI();
+        prepareMicReceiver();
     }
 
     private void prepareIPClient() {
@@ -80,6 +84,10 @@ public class RCControllerController implements Initializable, IPClient.OnServerD
     private void prepareUI() {
         disconnectFromHLSStream();
         liveStreamHolder.getChildren().remove(liveStreamMediaView);
+    }
+
+    private void prepareMicReceiver(){
+        micReceiver = MicReceiver.getMicReceiver();
     }
 
     public void prepareKeyControls() {
@@ -321,6 +329,8 @@ public class RCControllerController implements Initializable, IPClient.OnServerD
         if (startStopLiveStream.isSelected()) {
 //            liveStreamHolder.getChildren().add(liveStreamMediaView);
 
+            startMicReceiver();
+
             JSONObject jsonObject = new JSONObject();
             try {
                 jsonObject.put(CommConstants.NAME_SUCCESS, true);
@@ -349,6 +359,8 @@ public class RCControllerController implements Initializable, IPClient.OnServerD
         } else {
 
 //            liveStreamHolder.getChildren().remove(liveStreamMediaView);
+
+            stopMicReceiver();
 
             disconnectFromHLSStream();
             JSONObject jsonObject = new JSONObject();
@@ -447,6 +459,13 @@ public class RCControllerController implements Initializable, IPClient.OnServerD
         }*/
     }
 
+    private void startMicReceiver(){
+        micReceiver.startReceiving();
+    }
+
+    private void stopMicReceiver(){
+        micReceiver.stopReceiving();
+    }
 
     public Stage getCurrentStage() {
         return currentStage;

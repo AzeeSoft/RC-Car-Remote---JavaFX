@@ -2,6 +2,7 @@ package com.azeesoft.rcremote.java;
 
 import com.azeesoft.rcremote.java.controllers.MainController;
 import com.azeesoft.rcremote.java.tools.wifi.IPClient;
+import com.azeesoft.rcremote.java.tools.wifi.MicReceiver;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
@@ -32,6 +33,9 @@ public class Main extends Application {
                 if (ipClient.getClientSocket() != null && ipClient.getClientSocket().isConnected()) {
                     ipClient.disconnect();
                 }
+
+                MicReceiver micReceiver = MicReceiver.getMicReceiver();
+                micReceiver.stopReceiving();
             }
         });
     }
