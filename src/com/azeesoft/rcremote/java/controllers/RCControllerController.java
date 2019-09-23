@@ -15,6 +15,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.media.MediaView;
+import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -86,7 +87,7 @@ public class RCControllerController implements Initializable, IPClient.OnServerD
         liveStreamHolder.getChildren().remove(liveStreamMediaView);
     }
 
-    private void prepareMicReceiver(){
+    private void prepareMicReceiver() {
         micReceiver = MicReceiver.getMicReceiver();
     }
 
@@ -101,27 +102,27 @@ public class RCControllerController implements Initializable, IPClient.OnServerD
                 boolean transmitData = false;
                 switch (event.getCode()) {
                     case UP:
-                        if(!moveForward) {
+                        if (!moveForward) {
                             moveForward = true;
-                            transmitData=true;
+                            transmitData = true;
                         }
                         break;
                     case DOWN:
-                        if(!moveBackward) {
+                        if (!moveBackward) {
                             moveBackward = true;
-                            transmitData=true;
+                            transmitData = true;
                         }
                         break;
                     case LEFT:
-                        if(!moveLeft) {
+                        if (!moveLeft) {
                             moveLeft = true;
-                            transmitData=true;
+                            transmitData = true;
                         }
                         break;
                     case RIGHT:
-                        if(!moveRight) {
+                        if (!moveRight) {
                             moveRight = true;
-                            transmitData=true;
+                            transmitData = true;
                         }
                         break;
                 }
@@ -136,35 +137,34 @@ public class RCControllerController implements Initializable, IPClient.OnServerD
 
         currentStage.getScene().addEventFilter(KeyEvent.KEY_RELEASED, new EventHandler<KeyEvent>() {
             @Override
-            public void handle(KeyEvent event)
-            {
+            public void handle(KeyEvent event) {
 //                if(speechTextField.isFocused())
 //                    return;
 
                 boolean transmitData = false;
                 switch (event.getCode()) {
                     case UP:
-                        if(moveForward) {
+                        if (moveForward) {
                             moveForward = false;
-                            transmitData=true;
+                            transmitData = true;
                         }
                         break;
                     case DOWN:
-                        if(moveBackward) {
+                        if (moveBackward) {
                             moveBackward = false;
-                            transmitData=true;
+                            transmitData = true;
                         }
                         break;
                     case LEFT:
-                        if(moveLeft) {
+                        if (moveLeft) {
                             moveLeft = false;
-                            transmitData=true;
+                            transmitData = true;
                         }
                         break;
                     case RIGHT:
-                        if(moveRight) {
+                        if (moveRight) {
                             moveRight = false;
-                            transmitData=true;
+                            transmitData = true;
                         }
                         break;
                 }
@@ -201,22 +201,27 @@ public class RCControllerController implements Initializable, IPClient.OnServerD
         int hStrength = 0;
         int vStrength = 0;
 
-        if (hAngle != -1) {
-            hStrength = 100;
-        }
         if (vAngle != -1) {
             vStrength = 100;
         }
+        if (hAngle != -1) {
+            if (vStrength == 0) {
+                hStrength = 30;
+            } else {
+                hStrength = 100;
+            }
+        }
+
 
         transmitJoystickData("AnalogH:" + hAngle + ":" + hStrength + ":");
         transmitJoystickData("AnalogV:" + vAngle + ":" + vStrength + ":");
 
-        if(hStrength==0) {
+        if (hStrength == 0) {
             transmitJoystickData("AnalogH:" + hAngle + ":" + hStrength + ":");
             transmitJoystickData("AnalogH:" + hAngle + ":" + hStrength + ":");
         }
 
-        if(vStrength==0) {
+        if (vStrength == 0) {
             transmitJoystickData("AnalogV:" + vAngle + ":" + vStrength + ":");
             transmitJoystickData("AnalogV:" + vAngle + ":" + vStrength + ":");
         }
@@ -410,21 +415,15 @@ public class RCControllerController implements Initializable, IPClient.OnServerD
 
         Stools.log("Connecting to hls...");
 
-        /*Desktop desktop= Desktop.getDesktop();
+//        String fileName = "RCLiveStream.lnk";
+        String fileName = "Zerone - Live.lnk";
         try {
-            desktop.browse(new URL("http://" + serverIP + ":" + serverLiveStreamPort + "/").toURI());
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }*/
-
-        try {
-            File file = new File("RCLiveStream.lnk");
+            File file = new File(fileName);
             if (!file.exists()) {
                 OutputStream os = new FileOutputStream(file);
 
-                InputStream is = getClass().getResourceAsStream("../../res/files/RCLiveStream.lnk");
+
+                InputStream is = getClass().getResourceAsStream("../../res/files/" + fileName);
                 try {
                     byte[] buffer = new byte[1024];
                     int length;
@@ -437,9 +436,10 @@ public class RCControllerController implements Initializable, IPClient.OnServerD
                 }
             }
 
-            ProcessBuilder pb = new ProcessBuilder("cmd", "/c",
-                    "RCLiveStream.lnk");
+
+            ProcessBuilder pb = new ProcessBuilder("cmd", "/c", fileName);
             Process p = pb.start();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -459,11 +459,11 @@ public class RCControllerController implements Initializable, IPClient.OnServerD
         }*/
     }
 
-    private void startMicReceiver(){
+    private void startMicReceiver() {
         micReceiver.startReceiving();
     }
 
-    private void stopMicReceiver(){
+    private void stopMicReceiver() {
         micReceiver.stopReceiving();
     }
 
